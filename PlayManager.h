@@ -5,12 +5,17 @@ class PlayManager {
     int sz;
 
   public:
-    void setup(int size, int *inputs, AudioEffectEnvelope *freqsSet[]) {
+    void setup(int size, int inputs[], AudioEffectEnvelope* freqsSet[]) {
+      //Initialize arrays
+      buttons = new Bounce*[size];
+      envelopes = new AudioEffectEnvelope*[size];
+      
       sz = size;
       envelopes = freqsSet;
 
       //Setup of objects
       for (int i = 0; i < sz; i++) {
+        //Instantiate new buttons
         buttons[i] = new Bounce();
         
         pinMode(inputs[i], INPUT);
@@ -30,5 +35,18 @@ class PlayManager {
         }
         
       }
+    }
+
+    //Deconstructor
+    ~PlayManager() {
+      //Destruct all classes
+      for (int i = 0; i < sz; i++) {
+        delete buttons[i];
+        delete envelopes[i];
+      }
+
+      //Delete entire arrays
+      delete[] buttons;
+      delete[] envelopes;
     }
 };

@@ -1,23 +1,21 @@
 class PlayManager {
   private:
-    Bounce *buttons;
-    AudioEffectEnvelope *envelopes;
+    Bounce **buttons;
+    AudioEffectEnvelope **envelopes;
     int sz;
 
   public:
-    void setup(int size, int *inputs, AudioEffectEnvelope *freqsSet) {
+    void setup(int size, int *inputs, AudioEffectEnvelope *freqsSet[]) {
       sz = size;
-      buttons = inputs;
       envelopes = freqsSet;
 
       //Setup of objects
       for (int i = 0; i < sz; i++) {
-        //Button setups
         buttons[i] = new Bounce();
         
-        pinMode(waveform1Set[i], INPUT);
-        buttons->attach(inputs[i]);
-        buttons->interval(5);
+        pinMode(inputs[i], INPUT);
+        buttons[i]->attach(inputs[i]);
+        buttons[i]->interval(5);
       }
     }
 

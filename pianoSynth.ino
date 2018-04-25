@@ -4,7 +4,9 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+
 #include "BinaryDisplay.h"
+#include "PlayManager.h"
 
 // GUItool: begin automatically generated code
 AudioSynthWaveform       waveform2;      //xy=116,453

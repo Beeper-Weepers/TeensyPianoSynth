@@ -6,31 +6,35 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       waveform2;      //xy=167,179
-AudioSynthWaveform       waveform4;      //xy=167,245
-AudioSynthWaveform       waveform1;      //xy=169,53
-AudioSynthWaveform       waveform3;      //xy=172,115
-AudioEffectMultiply      multiply1;      //xy=348,83
-AudioEffectMultiply      multiply2;      //xy=351,192
-AudioEffectEnvelope      envelope2;      //xy=507,199
-AudioEffectEnvelope      envelope1;      //xy=511,87
-AudioMixer4              mixer1;         //xy=646,146
-AudioFilterStateVariable filter1;        //xy=800,244
-AudioOutputI2S           i2s1;           //xy=959,238
-AudioConnection          patchCord1(waveform2, 0, multiply2, 0);
-AudioConnection          patchCord2(waveform4, 0, multiply2, 1);
-AudioConnection          patchCord3(waveform1, 0, multiply1, 0);
-AudioConnection          patchCord4(waveform3, 0, multiply1, 1);
+AudioSynthWaveform       waveform4;      //xy=160,419
+AudioSynthWaveform       waveform2;      //xy=161,365
+AudioSynthWaveform       waveform3;      //xy=168,299
+AudioSynthWaveform       waveform1;      //xy=169,250
+AudioEffectMultiply      multiply1;      //xy=370,269
+AudioEffectMultiply      multiply2;      //xy=370,385
+AudioEffectEnvelope      envelope1;      //xy=524,279
+AudioEffectEnvelope      envelope2;      //xy=526,377
+AudioMixer4              mixer1;         //xy=766,251
+AudioSynthWaveformSine   sine1;          //xy=770,334
+AudioEffectMultiply      multiply3;      //xy=959,245
+AudioFilterStateVariable filter1;        //xy=1102,252
+AudioEffectReverb        reverb1;        //xy=1250,250
+AudioOutputI2S           i2s1;           //xy=1421,256
+AudioConnection          patchCord1(waveform4, 0, multiply2, 1);
+AudioConnection          patchCord2(waveform2, 0, multiply2, 0);
+AudioConnection          patchCord3(waveform3, 0, multiply1, 1);
+AudioConnection          patchCord4(waveform1, 0, multiply1, 0);
 AudioConnection          patchCord5(multiply1, envelope1);
 AudioConnection          patchCord6(multiply2, envelope2);
-AudioConnection          patchCord7(envelope2, 0, mixer1, 1);
-AudioConnection          patchCord8(envelope1, 0, mixer1, 0);
-AudioConnection          patchCord9(mixer1, 0, filter1, 0);
-AudioConnection          patchCord10(filter1, 1, i2s1, 0);
-AudioConnection          patchCord11(filter1, 1, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=646,28
+AudioConnection          patchCord7(envelope1, 0, mixer1, 0);
+AudioConnection          patchCord8(envelope2, 0, mixer1, 1);
+AudioConnection          patchCord9(mixer1, 0, multiply3, 0);
+AudioConnection          patchCord10(sine1, 0, multiply3, 1);
+AudioConnection          patchCord11(multiply3, 0, filter1, 0);
+AudioConnection          patchCord12(filter1, 0, reverb1, 0);
+AudioConnection          patchCord13(reverb1, 0, i2s1, 0);
+AudioConnection          patchCord14(reverb1, 0, i2s1, 1);
 // GUItool: end automatically generated code
-
 
 const int note1OnPin = 24;
 const int note2OnPin = 25;
@@ -39,7 +43,7 @@ Bounce *note2OnBounce = new Bounce();
 #define potPin A20
 
 void setup() {
-  AudioMemory(30);
+  AudioMemory(40);
   Serial.begin(9600);
 
   waveform1.begin(1.0, 440.0, WAVEFORM_SINE);
@@ -52,12 +56,17 @@ void setup() {
   filter1.resonance(0.7);
   filter1.octaveControl(1);
 
-  envelope1.hold(50);
-  envelope2.hold(50);
-  envelope1.decay(100);
-  envelope2.decay(100);
-  envelope1.sustain(0.4);
-  envelope2.sustain(0.4);
+  envelope1.hold(100);
+  envelope2.hold(100);
+  envelope1.decay(800);
+  envelope2.decay(800);
+  envelope1.sustain(0.0); //volume
+  envelope2.sustain(0.0);
+
+  sine1.amplitude(1.0);
+  sine1.frequency(50);
+
+  reverb1.reverbTime(0.1);
 
   //Turn pot
   //pinMode(potPin, INPUT);
@@ -77,8 +86,7 @@ void setup() {
 void loop() {
   //Filter update with pots
   int filterPot = analogRead(potPin);
-  filter1.frequency((filterPot / 1024.0) * 500.0);
-  Serial.println(filterPot);
+  sine1.frequency((filterPot / 1024.0) * 500.0);
 
   //Turn on note if the button rose and off if it fell
   note1OnBounce->update();

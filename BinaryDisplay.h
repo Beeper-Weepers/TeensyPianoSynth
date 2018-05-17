@@ -1,10 +1,13 @@
+#ifndef _BinaryDisplay_h_
+#define _BinaryDisplay_h_
+
 class BinaryDisplay {
   private:
-    int *pins;
+    const int *pins;
     int sz;
     
   public:
-    void setup(int *pinArray, int arraySize) {
+    void setup(int arraySize, const int pinArray[]) {
       pins = pinArray;
       sz = arraySize;
     }
@@ -19,3 +22,5 @@ class BinaryDisplay {
       
     }
 };
+
+#endif

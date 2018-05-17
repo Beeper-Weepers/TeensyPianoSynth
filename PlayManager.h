@@ -1,20 +1,27 @@
+#ifndef _PlayManager_h_
+#define _PlayManager_h_
+
 class PlayManager {
   private:
     Bounce **buttons;
-    AudioEffectEnvelope **envelopes;
+    AudioEffectEnvelope *envelopes;
     int sz;
 
   public:
-    void setup(int size, int inputs[], AudioEffectEnvelope* freqsSet[]) {
+    void setup(int size, const int inputs[], AudioEffectEnvelope envSet[]) {
       //Initialize arrays
       buttons = new Bounce*[size];
-      envelopes = new AudioEffectEnvelope*[size];
       
       sz = size;
-      envelopes = freqsSet;
+      envelopes = envSet;
 
       //Setup of objects
       for (int i = 0; i < sz; i++) {
+        //Setup envelopes
+        envelopes[i].hold(100);
+        envelopes[i].decay(800);
+        envelopes[i].sustain(0.0);
+        
         //Instantiate new buttons
         buttons[i] = new Bounce();
         
@@ -29,9 +36,9 @@ class PlayManager {
         
         buttons[i]->update();
         if (buttons[i]->rose()) {
-          envelopes[i]->noteOn();
+          envelopes[i].noteOn();
         } else if (buttons[i]->fell()) {
-          envelopes[i]->noteOff();
+          envelopes[i].noteOff();
         }
         
       }
@@ -42,7 +49,6 @@ class PlayManager {
       //Destruct all classes
       for (int i = 0; i < sz; i++) {
         delete buttons[i];
-        delete envelopes[i];
       }
 
       //Delete entire arrays
@@ -50,3 +56,5 @@ class PlayManager {
       delete[] envelopes;
     }
 };
+
+#endif

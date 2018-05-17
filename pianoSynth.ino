@@ -6,101 +6,122 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       waveform4;      //xy=160,419
-AudioSynthWaveform       waveform2;      //xy=161,365
-AudioSynthWaveform       waveform3;      //xy=168,299
-AudioSynthWaveform       waveform1;      //xy=169,250
-AudioEffectMultiply      multiply1;      //xy=370,269
-AudioEffectMultiply      multiply2;      //xy=370,385
-AudioEffectEnvelope      envelope1;      //xy=524,279
-AudioEffectEnvelope      envelope2;      //xy=526,377
+AudioSynthWaveform       waveform13;     //xy=150,703
+AudioSynthWaveform       waveform14;     //xy=150,744
+AudioSynthWaveform       waveform12;     //xy=151,655
+AudioSynthWaveform       waveform11;     //xy=156,614
+AudioSynthWaveform       waveform6;      //xy=157,379
+AudioSynthWaveform       waveform9;      //xy=159,526
+AudioSynthWaveform       waveform8;      //xy=161,472
+AudioSynthWaveform       waveform10;     //xy=162,566
+AudioSynthWaveform       waveform7;      //xy=163,431
+AudioSynthWaveform       waveform2;      //xy=167,174
+AudioSynthWaveform       waveform4;      //xy=168,288
+AudioSynthWaveform       waveform5;      //xy=169,333
+AudioSynthWaveform       waveform3;      //xy=171,235
+AudioSynthWaveform       waveform1;      //xy=172,120
+AudioEffectMultiply      multiply6;      //xy=341,622
+AudioEffectMultiply      multiply5;      //xy=342,545
+AudioEffectMultiply      multiply3;      //xy=350,347
+AudioEffectMultiply      multiply4;      //xy=350,460
+AudioEffectMultiply      multiply7;      //xy=351,702
+AudioEffectMultiply      multiply2;      //xy=354,264
+AudioEffectMultiply      multiply1;      //xy=363,144
+AudioEffectEnvelope      envelope1;      //xy=528,143
+AudioEffectEnvelope      envelope5;      //xy=527,520
+AudioEffectEnvelope      envelope4;      //xy=530,418
+AudioEffectEnvelope      envelope6;      //xy=530,617
+AudioEffectEnvelope      envelope7;      //xy=533,699
+AudioEffectEnvelope      envelope3;      //xy=551,311
+AudioEffectEnvelope      envelope2;      //xy=552,212
 AudioMixer4              mixer1;         //xy=766,251
-AudioSynthWaveformSine   sine1;          //xy=770,334
-AudioEffectMultiply      multiply3;      //xy=959,245
-AudioFilterStateVariable filter1;        //xy=1102,252
-AudioEffectReverb        reverb1;        //xy=1250,250
-AudioOutputI2S           i2s1;           //xy=1421,256
-AudioConnection          patchCord1(waveform4, 0, multiply2, 1);
-AudioConnection          patchCord2(waveform2, 0, multiply2, 0);
-AudioConnection          patchCord3(waveform3, 0, multiply1, 1);
-AudioConnection          patchCord4(waveform1, 0, multiply1, 0);
-AudioConnection          patchCord5(multiply1, envelope1);
-AudioConnection          patchCord6(multiply2, envelope2);
-AudioConnection          patchCord7(envelope1, 0, mixer1, 0);
-AudioConnection          patchCord8(envelope2, 0, mixer1, 1);
-AudioConnection          patchCord9(mixer1, 0, multiply3, 0);
-AudioConnection          patchCord10(sine1, 0, multiply3, 1);
-AudioConnection          patchCord11(multiply3, 0, filter1, 0);
-AudioConnection          patchCord12(filter1, 0, reverb1, 0);
-AudioConnection          patchCord13(reverb1, 0, i2s1, 0);
-AudioConnection          patchCord14(reverb1, 0, i2s1, 1);
+AudioMixer4              mixer2;         //xy=772,347
+AudioMixer4              mixer3;         //xy=924,280
+AudioFilterStateVariable filter1;        //xy=1080,280
+AudioOutputI2S           i2s1;           //xy=1221,278
+AudioConnection          patchCord1(waveform13, 0, multiply7, 0);
+AudioConnection          patchCord2(waveform14, 0, multiply7, 1);
+AudioConnection          patchCord3(waveform12, 0, multiply6, 1);
+AudioConnection          patchCord4(waveform11, 0, multiply6, 0);
+AudioConnection          patchCord5(waveform6, 0, multiply3, 1);
+AudioConnection          patchCord6(waveform9, 0, multiply5, 0);
+AudioConnection          patchCord7(waveform8, 0, multiply4, 1);
+AudioConnection          patchCord8(waveform10, 0, multiply5, 1);
+AudioConnection          patchCord9(waveform7, 0, multiply4, 0);
+AudioConnection          patchCord10(waveform2, 0, multiply1, 1);
+AudioConnection          patchCord11(waveform4, 0, multiply2, 1);
+AudioConnection          patchCord12(waveform5, 0, multiply3, 0);
+AudioConnection          patchCord13(waveform3, 0, multiply2, 0);
+AudioConnection          patchCord14(waveform1, 0, multiply1, 0);
+AudioConnection          patchCord15(multiply6, envelope6);
+AudioConnection          patchCord16(multiply5, envelope5);
+AudioConnection          patchCord17(multiply3, envelope3);
+AudioConnection          patchCord18(multiply4, envelope4);
+AudioConnection          patchCord19(multiply7, envelope7);
+AudioConnection          patchCord20(multiply2, envelope2);
+AudioConnection          patchCord21(multiply1, envelope1);
+AudioConnection          patchCord22(envelope1, 0, mixer1, 0);
+AudioConnection          patchCord23(envelope5, 0, mixer2, 0);
+AudioConnection          patchCord24(envelope4, 0, mixer1, 3);
+AudioConnection          patchCord25(envelope6, 0, mixer2, 1);
+AudioConnection          patchCord26(envelope7, 0, mixer2, 2);
+AudioConnection          patchCord27(envelope3, 0, mixer1, 2);
+AudioConnection          patchCord28(envelope2, 0, mixer1, 1);
+AudioConnection          patchCord29(mixer1, 0, mixer3, 0);
+AudioConnection          patchCord30(mixer2, 0, mixer3, 1);
+AudioConnection          patchCord31(mixer3, 0, filter1, 0);
+AudioConnection          patchCord32(filter1, 0, i2s1, 0);
+AudioConnection          patchCord33(filter1, 0, i2s1, 1);
 // GUItool: end automatically generated code
 
-const int note1OnPin = 24;
-const int note2OnPin = 25;
-Bounce *note1OnBounce = new Bounce();
-Bounce *note2OnBounce = new Bounce();
-#define potPin A20
+
+//Custom headers importing
+#include "BinaryDisplay.h"
+#include "PlayManager.h"
+#include "FrequencyData.h"
+
+#define keyCount 7
+//Should be x2 the keyCount
+#define waveformCount 14
+
+//Pin structures
+const int buttons[] = {36, 37, 38, 39};
+#define ledsSize 4
+const int leds[ledsSize] = {24, 25, 26, 27};
+const int keys[keyCount] = {29, 28, 35, 32, 31, 30, 33};
+
+//Object declaration
+BinaryDisplay displayer;
+PlayManager manager;
+
+//Audio structures
+AudioEffectEnvelope envelopes[] = {envelope1, envelope2, envelope3, envelope4, envelope5, envelope6, envelope7};
+AudioSynthWaveform waveforms[waveformCount] = {waveform1, waveform2, waveform3, waveform4, waveform5, waveform6, waveform7, waveform8, waveform9, waveform10, waveform11, waveform12, waveform13, waveform14};
+
+//Frequencies for keys
+const float scale[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4 };
 
 void setup() {
-  AudioMemory(40);
-  Serial.begin(9600);
+  AudioMemory(36);
+  //Serial.begin(9600);
 
-  waveform1.begin(1.0, 440.0, WAVEFORM_SINE);
-  waveform3.begin(1.0, 444.0 / 2, WAVEFORM_SINE);
+  //Setup static custom objects
+  manager.setup(keyCount, keys, envelopes);
+  displayer.setup(ledsSize, leds);
+  
+  //Setup waveforms
+  for (int i = 0; i < waveformCount; i++) {
+    waveforms[i * 2].begin(1.0, scale[i], WAVEFORM_SINE);
+    waveforms[i * 2 + 1].begin(1.0, scale[i] / 2.0, WAVEFORM_SINE);
+  }
 
-  waveform2.begin(1.0, 493.88, WAVEFORM_SINE);
-  waveform4.begin(1.0, 493.88 / 2, WAVEFORM_SINE);
-
+  //Setup filter
   filter1.frequency(400);
   filter1.resonance(0.7);
   filter1.octaveControl(1);
-
-  envelope1.hold(100);
-  envelope2.hold(100);
-  envelope1.decay(800);
-  envelope2.decay(800);
-  envelope1.sustain(0.0); //volume
-  envelope2.sustain(0.0);
-
-  sine1.amplitude(1.0);
-  sine1.frequency(50);
-
-  reverb1.reverbTime(0.1);
-
-  //Turn pot
-  //pinMode(potPin, INPUT);
-
-  pinMode(note1OnPin, INPUT);
-  //digitalWrite(inputPin ,HIGH);
-  note1OnBounce->attach(note1OnPin);
-  note1OnBounce->interval(5);
-
-  pinMode(note2OnPin, INPUT);
-  //digitalWrite(inputPin ,HIGH);
-  note2OnBounce->attach(note2OnPin);
-  note2OnBounce->interval(5);
 }
 
 
 void loop() {
-  //Filter update with pots
-  int filterPot = analogRead(potPin);
-  sine1.frequency((filterPot / 1024.0) * 500.0);
-
-  //Turn on note if the button rose and off if it fell
-  note1OnBounce->update();
-  if (note1OnBounce->rose()) {
-    envelope1.noteOn();
-  } else if (note1OnBounce->fell()) {
-    envelope1.noteOff();
-  }
-
-  //Turn on note if the button rose and off if it fell
-  note2OnBounce->update();
-  if (note2OnBounce->rose()) {
-    envelope2.noteOn();
-  } else if (note2OnBounce->fell()) {
-    envelope2.noteOff();
-  }
+  manager.updatePatches();
 }

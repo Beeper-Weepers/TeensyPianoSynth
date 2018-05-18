@@ -4,11 +4,11 @@
 class PlayManager {
   private:
     Bounce **buttons;
-    AudioEffectEnvelope **envelopes;
+    AudioEffectEnvelope *envelopes;
     int sz;
 
   public:
-    void setup(int size, const int inputs[], AudioEffectEnvelope *envSet[]) {
+    void setup(int size, const int inputs[], AudioEffectEnvelope envSet[]) {
       //Initialize arrays
       buttons = new Bounce*[size];
       
@@ -18,9 +18,9 @@ class PlayManager {
       //Setup of objects
       for (int i = 0; i < sz; i++) {
         //Setup envelopes
-        envelopes[i]->hold(100);
-        envelopes[i]->decay(800);
-        envelopes[i]->sustain(0.0);
+        envelopes[i].hold(100);
+        envelopes[i].decay(800);
+        envelopes[i].sustain(0.0);
         
         //Instantiate new buttons
         buttons[i] = new Bounce();
@@ -36,9 +36,9 @@ class PlayManager {
         
         buttons[i]->update();
         if (buttons[i]->rose()) {
-          envelopes[i]->noteOff();
+          envelopes[i].noteOn();
         } else if (buttons[i]->fell()) {
-          envelopes[i]->noteOn();
+          envelopes[i].noteOff();
         }
         
       }

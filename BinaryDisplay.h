@@ -4,12 +4,18 @@
 class BinaryDisplay {
   private:
     const int *pins;
-    int sz;
+    uint8_t sz;
+    
+    boolean on;
+    uint64_t startOn;
+    int left; //time left in milliseconds
     
   public:
-    void setup(int arraySize, const int pinArray[]) {
+    void setup(uint8_t arraySize, const int pinArray[]) {
       pins = pinArray;
       sz = arraySize;
+
+      on = false;
     }
 
     void setValue(int value) {
@@ -17,9 +23,22 @@ class BinaryDisplay {
       int bitBin;
       for (int i = 0; i < sz; i++) {
         bitBin = 1 << i;
-        digitalWrite(i, (value & bitBin) >> i);
+        digitalWrite(pins[i], (value & bitBin) >> i);
       }
-      
+
+      on = true;
+      startOn = millis();
+      left = 10 * 1000;
+    }
+
+    void updateLEDs() {
+      if (on && left < (millis() - startOn)) {
+        on = false;
+        //Reset lights
+        for (int i = 0; i < sz; i++) {
+          digitalWrite(pins[i], 0);
+        }
+      }
     }
 };
 

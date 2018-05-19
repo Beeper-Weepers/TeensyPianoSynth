@@ -14,8 +14,12 @@ class BinaryDisplay {
     void setup(uint8_t arraySize, const int pinArray[]) {
       pins = pinArray;
       sz = arraySize;
-
       on = false;
+
+      //Setup LEDs
+      for (int i = 0; i < arraySize; i++) {
+        pinMode(pins[i], OUTPUT);
+      }
     }
 
     void setValue(int value) {
@@ -32,7 +36,7 @@ class BinaryDisplay {
     }
 
     void updateLEDs() {
-      if (on && left < (millis() - startOn)) {
+      if (on && left < (int) (millis() - startOn)) {
         on = false;
         //Reset lights
         for (int i = 0; i < sz; i++) {

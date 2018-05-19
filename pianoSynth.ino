@@ -5,12 +5,6 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
-#include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-#include <SerialFlash.h>
-
 // GUItool: begin automatically generated code
 AudioSynthWaveform       waveform13;     //xy=150,703
 AudioSynthWaveform       waveform12;     //xy=151,655
@@ -80,7 +74,6 @@ AudioConnection          patchCord32(filter1, 0, i2s1, 0);
 AudioConnection          patchCord33(filter1, 0, i2s1, 1);
 // GUItool: end automatically generated code
 
-
 //Custom headers importing
 #include "BinaryDisplay.h"
 #include "PlayManager.h"
@@ -91,10 +84,14 @@ AudioConnection          patchCord33(filter1, 0, i2s1, 1);
 #define waveformCount 14
 
 //Pin structures
-const int buttons[] = {36, 37, 38, 39};
+#define buttonsSize 4
+const int buttonPins[] = {36, 37, 38, 39};
+Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce()};
+
+const int keys[keyCount] = {31, 30, 33, 29, 28, 35, 32};
+
 #define ledsSize 4
 const int leds[ledsSize] = {24, 25, 26, 27};
-const int keys[keyCount] = {29, 28, 35, 32, 31, 30, 33};
 
 //Object declaration
 BinaryDisplay displayer;
@@ -104,21 +101,27 @@ PlayManager manager;
 AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelope4, &envelope5, &envelope6, &envelope7};
 AudioSynthWaveform *waveforms[waveformCount] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14};
 
-//Frequencies for keys
-const float scale[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4 };
+int currentScale = 0;
 
 void setup() {
-  AudioMemory(60);
+  AudioMemory(100);
   Serial.begin(9600);
 
   //Setup static custom objects
-  manager.setup(keyCount, keys, envelopes);
+  manager.setup(keyCount, keys, envelopes, &displayer);
   displayer.setup(ledsSize, leds);
   
   //Setup waveforms
   for (int i = 0; i < keyCount; i++) {
     waveforms[i * 2]->begin(1.0, scale[i], WAVEFORM_SINE);
     waveforms[i * 2 + 1]->begin(1.0, scale[i] / 2.0, WAVEFORM_SINE);
+  }
+
+  //Setup up buttons
+  for (int i = 0; i < buttonsSize; i++) {
+    pinMode(buttonPins[i], INPUT);
+    buttons[i]->attach(buttonPins[i]);
+    buttons[i]->interval(5);
   }
 
   //Setup filter
@@ -134,4 +137,11 @@ void setup() {
 void loop() {
   manager.updatePatches();
   displayer.updateLEDs();
+
+  //Scale shifting
+  buttons[0]->update();
+  if (buttons[0]->rose()) {
+    currentScale += (currentScale + 1) % 4;
+  }
 }
+

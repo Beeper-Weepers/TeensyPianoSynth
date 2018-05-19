@@ -6,9 +6,10 @@ class PlayManager {
     Bounce **buttons;
     AudioEffectEnvelope **envelopes;
     int sz;
+    BinaryDisplay *disp;
 
   public:
-    void setup(int size, const int inputs[], AudioEffectEnvelope *envSet[]) {
+    void setup(int size, const int inputs[], AudioEffectEnvelope *envSet[], BinaryDisplay *dis) {
       //Initialize arrays
       buttons = new Bounce*[size];
       
@@ -29,9 +30,12 @@ class PlayManager {
         buttons[i]->attach(inputs[i]);
         buttons[i]->interval(5);
       }
+
+      disp = dis;
     }
 
     void updatePatches() {
+      
       for (int i = 0; i < sz; i++) {
         
         buttons[i]->update();
@@ -39,6 +43,7 @@ class PlayManager {
           envelopes[i]->noteOff();
         } else if (buttons[i]->fell()) {
           envelopes[i]->noteOn();
+          disp->setValue(i + 1);
         }
         
       }
@@ -47,9 +52,9 @@ class PlayManager {
     //Deconstructor
     ~PlayManager() {
       //Destruct all classes
-      for (int i = 0; i < sz; i++) {
+      /*for (int i = 0; i < sz; i++) {
         delete buttons[i];
-      }
+      }*/
 
       //Delete entire arrays
       delete[] buttons;

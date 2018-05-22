@@ -38,6 +38,10 @@
 #define NOTE_B4  493.88
 
 //Frequencies for keys
-const float scale[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4 };
+#define scaleCount 2
+const float cMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4 };
+const float cHarmonicMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_Fs4, NOTE_G4, NOTE_A4, NOTE_B4 };
+const float* scales[] = { cMajor, cHarmonicMajor };
+
 
 #endif

@@ -101,7 +101,14 @@ PlayManager manager;
 AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelope4, &envelope5, &envelope6, &envelope7};
 AudioSynthWaveform *waveforms[waveformCount] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14};
 
+//Current scale for keys
 int currentScale = 0;
+
+//Current waveform type for each oscillator
+int currentWav1 = 0;
+int currentWav2 = 0;
+#define waveTSize 4
+const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE };
 
 void setup() {
   AudioMemory(100);
@@ -113,8 +120,8 @@ void setup() {
   
   //Setup waveforms
   for (int i = 0; i < keyCount; i++) {
-    waveforms[i * 2]->begin(1.0, scale[i], WAVEFORM_SINE);
-    waveforms[i * 2 + 1]->begin(1.0, scale[i] / 2.0, WAVEFORM_SINE);
+    waveforms[i * 2]->begin(4.0 / 3.0, scale[i], WAVEFORM_SINE);
+    waveforms[i * 2 + 1]->begin(0.75, scale[i] / 2.0, WAVEFORM_TRIANGLE);
   }
 
   //Setup up buttons
@@ -141,7 +148,37 @@ void loop() {
   //Scale shifting
   buttons[0]->update();
   if (buttons[0]->rose()) {
-    currentScale += (currentScale + 1) % 4;
+    currentScale += (currentScale + 1) % scaleCount;
+
+    //Store scale inside temporary var to access within frequency loop
+    const float *scale = scales[currentScale];
+    
+    for (int i = 0; i < keyCount; i++) {
+      waveforms[i * 2]->frequency(scale[i]);
+      waveforms[i * 2 + 1]->frequency(scale[i] / 2.0);
+    }
+
+    displayer.setValue(currentScale);
+    
+  }
+
+  //Osc 1 type shifting
+  buttons[1]->update();
+  if (buttons[1]->rose()) {
+    currentWav1 = (currentWav1 + 1) % waveTSize;
+
+    for (int i = 0; i < keyCount; i++) {
+      waveforms[i * 2]->begin(waveTypes[currentWav1]);
+    } 
+  }
+
+  //Osc 2 type shifting
+  buttons[2]->update();
+  if (buttons[2]->rose()) {
+    currentWav2 = (currentWav2 + 1) % waveTSize;
+
+    for (int i = 0; i < keyCount; i++) {
+      waveforms[i * 2 + 1]->begin(waveTypes[currentWav2]);
+    } 
   }
 }
-

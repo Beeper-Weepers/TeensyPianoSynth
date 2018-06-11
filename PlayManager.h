@@ -28,7 +28,7 @@ class PlayManager {
         
         pinMode(inputs[i], INPUT);
         buttons[i]->attach(inputs[i]);
-        buttons[i]->interval(5);
+        buttons[i]->interval(20);
       }
 
       disp = dis;

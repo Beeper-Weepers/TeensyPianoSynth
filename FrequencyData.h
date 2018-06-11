@@ -40,8 +40,8 @@
 //Frequencies for keys
 #define scaleCount 2
 const float cMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4 };
-const float cHarmonicMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_Fs4, NOTE_G4, NOTE_A4, NOTE_B4 };
-const float* scales[] = { cMajor, cHarmonicMajor };
+const float cHarmonicMinor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_Fs4, NOTE_G4, NOTE_A4, NOTE_B4 };
+const float* scales[] = { cMajor, cHarmonicMinor };
 
 
 #endif

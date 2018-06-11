@@ -6,39 +6,39 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       waveform13;     //xy=150,703
-AudioSynthWaveform       waveform12;     //xy=151,655
-AudioSynthWaveform       waveform11;     //xy=156,614
-AudioSynthWaveform       waveform6;      //xy=157,379
-AudioSynthWaveform       waveform14;     //xy=157,755
-AudioSynthWaveform       waveform9;      //xy=159,526
-AudioSynthWaveform       waveform8;      //xy=161,472
-AudioSynthWaveform       waveform10;     //xy=162,566
-AudioSynthWaveform       waveform7;      //xy=163,431
-AudioSynthWaveform       waveform2;      //xy=167,174
-AudioSynthWaveform       waveform4;      //xy=168,288
-AudioSynthWaveform       waveform5;      //xy=169,333
-AudioSynthWaveform       waveform3;      //xy=171,235
-AudioSynthWaveform       waveform1;      //xy=172,120
-AudioEffectMultiply      multiply6;      //xy=341,622
-AudioEffectMultiply      multiply5;      //xy=342,545
-AudioEffectMultiply      multiply3;      //xy=350,347
-AudioEffectMultiply      multiply4;      //xy=350,460
-AudioEffectMultiply      multiply7;      //xy=351,723
-AudioEffectMultiply      multiply2;      //xy=354,264
-AudioEffectMultiply      multiply1;      //xy=371,144
-AudioEffectEnvelope      envelope1;      //xy=528,143
-AudioEffectEnvelope      envelope2;      //xy=528,248
-AudioEffectEnvelope      envelope5;      //xy=527,520
-AudioEffectEnvelope      envelope4;      //xy=530,418
-AudioEffectEnvelope      envelope6;      //xy=530,617
-AudioEffectEnvelope      envelope7;      //xy=538,720
-AudioEffectEnvelope      envelope3;      //xy=551,311
-AudioMixer4              mixer1;         //xy=766,251
-AudioMixer4              mixer2;         //xy=779,554
-AudioMixer4              mixer3;         //xy=978,278
-AudioFilterStateVariable filter1;        //xy=1116,278
-AudioOutputI2S           i2s1;           //xy=1272,275
+AudioSynthWaveform       waveform13;     //xy=360,649
+AudioSynthWaveform       waveform12;     //xy=361,601
+AudioSynthWaveform       waveform11;     //xy=366,560
+AudioSynthWaveform       waveform6;      //xy=367,325
+AudioSynthWaveform       waveform14;     //xy=367,701
+AudioSynthWaveform       waveform9;      //xy=369,472
+AudioSynthWaveform       waveform8;      //xy=371,418
+AudioSynthWaveform       waveform10;     //xy=372,512
+AudioSynthWaveform       waveform7;      //xy=373,377
+AudioSynthWaveform       waveform2;      //xy=377,120
+AudioSynthWaveform       waveform4;      //xy=378,234
+AudioSynthWaveform       waveform5;      //xy=379,279
+AudioSynthWaveform       waveform3;      //xy=381,181
+AudioSynthWaveform       waveform1;      //xy=382,66
+AudioEffectMultiply      multiply6;      //xy=551,568
+AudioEffectMultiply      multiply5;      //xy=552,491
+AudioEffectMultiply      multiply3;      //xy=560,293
+AudioEffectMultiply      multiply4;      //xy=560,406
+AudioEffectMultiply      multiply7;      //xy=561,669
+AudioEffectMultiply      multiply2;      //xy=564,210
+AudioEffectMultiply      multiply1;      //xy=581,90
+AudioEffectEnvelope      envelope1;      //xy=738,89
+AudioEffectEnvelope      envelope2;      //xy=738,194
+AudioEffectEnvelope      envelope5;      //xy=737,466
+AudioEffectEnvelope      envelope4;      //xy=740,364
+AudioEffectEnvelope      envelope6;      //xy=740,563
+AudioEffectEnvelope      envelope7;      //xy=748,666
+AudioEffectEnvelope      envelope3;      //xy=761,257
+AudioMixer4              mixer1;         //xy=976,197
+AudioMixer4              mixer2;         //xy=989,500
+AudioMixer4              mixer3;         //xy=1188,224
+AudioFilterStateVariable filter1;        //xy=1326,224
+AudioOutputI2S           i2s1;           //xy=1482,221
 AudioConnection          patchCord1(waveform13, 0, multiply7, 0);
 AudioConnection          patchCord2(waveform12, 0, multiply6, 1);
 AudioConnection          patchCord3(waveform11, 0, multiply6, 0);
@@ -72,6 +72,7 @@ AudioConnection          patchCord30(mixer2, 0, mixer3, 1);
 AudioConnection          patchCord31(mixer3, 0, filter1, 0);
 AudioConnection          patchCord32(filter1, 0, i2s1, 0);
 AudioConnection          patchCord33(filter1, 0, i2s1, 1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=359,761
 // GUItool: end automatically generated code
 
 //Custom headers importing
@@ -111,8 +112,11 @@ int currentWav2 = 0;
 const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE };
 
 void setup() {
-  AudioMemory(100);
+  AudioMemory(80);
   Serial.begin(9600);
+
+  sgtl5000_1.enable();
+  sgtl5000_1.volume(0.8);
 
   //Setup static custom objects
   manager.setup(keyCount, keys, envelopes, &displayer);
@@ -120,8 +124,8 @@ void setup() {
   
   //Setup waveforms
   for (int i = 0; i < keyCount; i++) {
-    waveforms[i * 2]->begin(4.0 / 3.0, scale[i], WAVEFORM_SINE);
-    waveforms[i * 2 + 1]->begin(0.75, scale[i] / 2.0, WAVEFORM_TRIANGLE);
+    waveforms[i * 2]->begin(4.0 / 3.0, cMajor[i], WAVEFORM_SINE);
+    waveforms[i * 2 + 1]->begin(0.75, cMajor[i] / 2.0, WAVEFORM_TRIANGLE);
   }
 
   //Setup up buttons
@@ -132,8 +136,8 @@ void setup() {
   }
 
   //Setup filter
-  filter1.frequency(400);
-  filter1.resonance(0.7);
+  filter1.frequency(350);
+  filter1.resonance(0.6);
   filter1.octaveControl(1);
 
   pinMode(13, OUTPUT);

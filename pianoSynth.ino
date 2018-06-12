@@ -6,90 +6,110 @@
 #include <SerialFlash.h>
 
 // GUItool: begin automatically generated code
-AudioSynthWaveform       waveform13;     //xy=360,649
-AudioSynthWaveform       waveform12;     //xy=361,601
-AudioSynthWaveform       waveform11;     //xy=366,560
-AudioSynthWaveform       waveform6;      //xy=367,325
-AudioSynthWaveform       waveform14;     //xy=367,701
-AudioSynthWaveform       waveform9;      //xy=369,472
-AudioSynthWaveform       waveform8;      //xy=371,418
-AudioSynthWaveform       waveform10;     //xy=372,512
-AudioSynthWaveform       waveform7;      //xy=373,377
-AudioSynthWaveform       waveform2;      //xy=377,120
-AudioSynthWaveform       waveform4;      //xy=378,234
-AudioSynthWaveform       waveform5;      //xy=379,279
-AudioSynthWaveform       waveform3;      //xy=381,181
-AudioSynthWaveform       waveform1;      //xy=382,66
-AudioEffectMultiply      multiply6;      //xy=551,568
-AudioEffectMultiply      multiply5;      //xy=552,491
-AudioEffectMultiply      multiply3;      //xy=560,293
-AudioEffectMultiply      multiply4;      //xy=560,406
-AudioEffectMultiply      multiply7;      //xy=561,669
-AudioEffectMultiply      multiply2;      //xy=564,210
-AudioEffectMultiply      multiply1;      //xy=581,90
-AudioEffectEnvelope      envelope1;      //xy=738,89
-AudioEffectEnvelope      envelope2;      //xy=738,194
-AudioEffectEnvelope      envelope5;      //xy=737,466
-AudioEffectEnvelope      envelope4;      //xy=740,364
-AudioEffectEnvelope      envelope6;      //xy=740,563
-AudioEffectEnvelope      envelope7;      //xy=748,666
-AudioEffectEnvelope      envelope3;      //xy=761,257
-AudioMixer4              mixer1;         //xy=976,197
-AudioMixer4              mixer2;         //xy=989,500
-AudioMixer4              mixer3;         //xy=1188,224
-AudioFilterStateVariable filter1;        //xy=1326,224
-AudioOutputI2S           i2s1;           //xy=1482,221
+AudioSynthWaveform       waveform13;     //xy=116,916
+AudioSynthWaveform       waveform12;     //xy=117,868
+AudioSynthWaveform       waveform16;     //xy=120,1091
+AudioSynthWaveform       waveform11;     //xy=122,827
+AudioSynthWaveform       waveform6;      //xy=123,592
+AudioSynthWaveform       waveform14;     //xy=123,968
+AudioSynthWaveform       waveform15;     //xy=123,1026
+AudioSynthWaveform       waveform9;      //xy=125,739
+AudioSynthWaveform       waveform8;      //xy=127,685
+AudioSynthWaveform       waveform10;     //xy=128,779
+AudioSynthWaveform       waveform7;      //xy=129,644
+AudioSynthWaveform       waveform2;      //xy=133,387
+AudioSynthWaveform       waveform4;      //xy=134,501
+AudioSynthWaveform       waveform5;      //xy=135,546
+AudioSynthWaveform       waveform3;      //xy=137,448
+AudioSynthWaveform       waveform1;      //xy=138,333
+AudioEffectMultiply      multiply6;      //xy=307,835
+AudioEffectMultiply      multiply5;      //xy=308,758
+AudioEffectMultiply      multiply3;      //xy=316,560
+AudioEffectMultiply      multiply4;      //xy=316,673
+AudioEffectMultiply      multiply7;      //xy=317,936
+AudioEffectMultiply      multiply2;      //xy=320,477
+AudioEffectMultiply      multiply8;      //xy=320,1057
+AudioEffectMultiply      multiply1;      //xy=337,357
+AudioEffectEnvelope      envelope1;      //xy=494,356
+AudioEffectEnvelope      envelope2;      //xy=494,461
+AudioEffectEnvelope      envelope5;      //xy=493,733
+AudioEffectEnvelope      envelope4;      //xy=496,631
+AudioEffectEnvelope      envelope6;      //xy=496,830
+AudioEffectEnvelope      envelope8;      //xy=499,1057
+AudioEffectEnvelope      envelope7;      //xy=504,933
+AudioEffectEnvelope      envelope3;      //xy=517,524
+AudioMixer4              mixer1;         //xy=721,518
+AudioMixer4              mixer2;         //xy=739,882
+AudioMixer4              mixer3;         //xy=923,675
+AudioSynthWaveformDc     dc1;            //xy=1085,581
+AudioSynthWaveformDc     dc2;            //xy=1089,742
+AudioFilterStateVariable filter1;        //xy=1090,656
+AudioEffectMultiply      multiply10;     //xy=1234,732
+AudioEffectMultiply      multiply9;      //xy=1236,587
+AudioMixer4              mixer4;         //xy=1384,668
+AudioOutputI2S           i2s1;           //xy=1523,666
 AudioConnection          patchCord1(waveform13, 0, multiply7, 0);
 AudioConnection          patchCord2(waveform12, 0, multiply6, 1);
-AudioConnection          patchCord3(waveform11, 0, multiply6, 0);
-AudioConnection          patchCord4(waveform6, 0, multiply3, 1);
-AudioConnection          patchCord5(waveform14, 0, multiply7, 1);
-AudioConnection          patchCord6(waveform9, 0, multiply5, 0);
-AudioConnection          patchCord7(waveform8, 0, multiply4, 1);
-AudioConnection          patchCord8(waveform10, 0, multiply5, 1);
-AudioConnection          patchCord9(waveform7, 0, multiply4, 0);
-AudioConnection          patchCord10(waveform2, 0, multiply1, 1);
-AudioConnection          patchCord11(waveform4, 0, multiply2, 1);
-AudioConnection          patchCord12(waveform5, 0, multiply3, 0);
-AudioConnection          patchCord13(waveform3, 0, multiply2, 0);
-AudioConnection          patchCord14(waveform1, 0, multiply1, 0);
-AudioConnection          patchCord15(multiply6, envelope6);
-AudioConnection          patchCord16(multiply5, envelope5);
-AudioConnection          patchCord17(multiply3, envelope3);
-AudioConnection          patchCord18(multiply4, envelope4);
-AudioConnection          patchCord19(multiply7, envelope7);
-AudioConnection          patchCord20(multiply2, envelope2);
-AudioConnection          patchCord21(multiply1, envelope1);
-AudioConnection          patchCord22(envelope1, 0, mixer1, 0);
-AudioConnection          patchCord23(envelope2, 0, mixer1, 1);
-AudioConnection          patchCord24(envelope5, 0, mixer2, 0);
-AudioConnection          patchCord25(envelope4, 0, mixer1, 3);
-AudioConnection          patchCord26(envelope6, 0, mixer2, 1);
-AudioConnection          patchCord27(envelope7, 0, mixer2, 2);
-AudioConnection          patchCord28(envelope3, 0, mixer1, 2);
-AudioConnection          patchCord29(mixer1, 0, mixer3, 0);
-AudioConnection          patchCord30(mixer2, 0, mixer3, 1);
-AudioConnection          patchCord31(mixer3, 0, filter1, 0);
-AudioConnection          patchCord32(filter1, 0, i2s1, 0);
-AudioConnection          patchCord33(filter1, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=359,761
+AudioConnection          patchCord3(waveform16, 0, multiply8, 1);
+AudioConnection          patchCord4(waveform11, 0, multiply6, 0);
+AudioConnection          patchCord5(waveform6, 0, multiply3, 1);
+AudioConnection          patchCord6(waveform14, 0, multiply7, 1);
+AudioConnection          patchCord7(waveform15, 0, multiply8, 0);
+AudioConnection          patchCord8(waveform9, 0, multiply5, 0);
+AudioConnection          patchCord9(waveform8, 0, multiply4, 1);
+AudioConnection          patchCord10(waveform10, 0, multiply5, 1);
+AudioConnection          patchCord11(waveform7, 0, multiply4, 0);
+AudioConnection          patchCord12(waveform2, 0, multiply1, 1);
+AudioConnection          patchCord13(waveform4, 0, multiply2, 1);
+AudioConnection          patchCord14(waveform5, 0, multiply3, 0);
+AudioConnection          patchCord15(waveform3, 0, multiply2, 0);
+AudioConnection          patchCord16(waveform1, 0, multiply1, 0);
+AudioConnection          patchCord17(multiply6, envelope6);
+AudioConnection          patchCord18(multiply5, envelope5);
+AudioConnection          patchCord19(multiply3, envelope3);
+AudioConnection          patchCord20(multiply4, envelope4);
+AudioConnection          patchCord21(multiply7, envelope7);
+AudioConnection          patchCord22(multiply2, envelope2);
+AudioConnection          patchCord23(multiply8, envelope8);
+AudioConnection          patchCord24(multiply1, envelope1);
+AudioConnection          patchCord25(envelope1, 0, mixer1, 0);
+AudioConnection          patchCord26(envelope2, 0, mixer1, 1);
+AudioConnection          patchCord27(envelope5, 0, mixer2, 0);
+AudioConnection          patchCord28(envelope4, 0, mixer1, 3);
+AudioConnection          patchCord29(envelope6, 0, mixer2, 1);
+AudioConnection          patchCord30(envelope8, 0, mixer2, 3);
+AudioConnection          patchCord31(envelope7, 0, mixer2, 2);
+AudioConnection          patchCord32(envelope3, 0, mixer1, 2);
+AudioConnection          patchCord33(mixer1, 0, mixer3, 0);
+AudioConnection          patchCord34(mixer2, 0, mixer3, 1);
+AudioConnection          patchCord35(mixer3, 0, filter1, 0);
+AudioConnection          patchCord36(dc1, 0, multiply9, 0);
+AudioConnection          patchCord37(dc2, 0, multiply10, 1);
+AudioConnection          patchCord38(filter1, 0, multiply9, 1);
+AudioConnection          patchCord39(filter1, 2, multiply10, 0);
+AudioConnection          patchCord40(multiply10, 0, mixer4, 1);
+AudioConnection          patchCord41(multiply9, 0, mixer4, 0);
+AudioConnection          patchCord42(mixer4, 0, i2s1, 0);
+AudioConnection          patchCord43(mixer4, 0, i2s1, 1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=159,1182
 // GUItool: end automatically generated code
+
 
 //Custom headers importing
 #include "BinaryDisplay.h"
 #include "PlayManager.h"
 #include "FrequencyData.h"
 
-#define keyCount 7
+#define keyCount 8
 //Should be x2 the keyCount
-#define waveformCount 14
+#define waveformCount 16
 
 //Pin structures
 #define buttonsSize 4
 const int buttonPins[] = {36, 37, 38, 39};
 Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce()};
 
-const int keys[keyCount] = {31, 30, 33, 29, 28, 35, 32};
+const int keys[keyCount] = {31, 30, 33, 29, 28, 35, 32, 34};
 
 #define ledsSize 4
 const int leds[ledsSize] = {24, 25, 26, 27};
@@ -99,8 +119,8 @@ BinaryDisplay displayer;
 PlayManager manager;
 
 //Audio structures
-AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelope4, &envelope5, &envelope6, &envelope7};
-AudioSynthWaveform *waveforms[waveformCount] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14};
+AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelope4, &envelope5, &envelope6, &envelope7, &envelope8};
+AudioSynthWaveform *waveforms[waveformCount] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14, &waveform15, &waveform16};
 
 //Current scale for keys
 int currentScale = 0;
@@ -110,6 +130,9 @@ int currentWav1 = 0;
 int currentWav2 = 0;
 #define waveTSize 4
 const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE };
+
+//High/Low Filter Mix
+const int filterPot = 57;
 
 void setup() {
   AudioMemory(80);
@@ -185,4 +208,10 @@ void loop() {
       waveforms[i * 2 + 1]->begin(waveTypes[currentWav2]);
     } 
   }
+
+  //Filter mixing
+  float mixValue = (float) analogRead(filterPot) / 1024.0;
+  dc1.amplitude(1.0 - mixValue, 20);
+  dc2.amplitude(mixValue, 20);
 }
+

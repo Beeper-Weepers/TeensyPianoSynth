@@ -132,7 +132,7 @@ int currentWav2 = 0;
 const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE };
 
 //High/Low Filter Mix
-const int filterPot = 57;
+#define filterPot A10
 
 void setup() {
   AudioMemory(80);
@@ -148,7 +148,7 @@ void setup() {
   //Setup waveforms
   for (int i = 0; i < keyCount; i++) {
     waveforms[i * 2]->begin(4.0 / 3.0, cMajor[i], WAVEFORM_SINE);
-    waveforms[i * 2 + 1]->begin(0.75, cMajor[i] / 2.0, WAVEFORM_TRIANGLE);
+    waveforms[i * 2 + 1]->begin(0.75, cMajor[i] / 2.0, WAVEFORM_SINE);
   }
 
   //Setup up buttons
@@ -197,6 +197,8 @@ void loop() {
     for (int i = 0; i < keyCount; i++) {
       waveforms[i * 2]->begin(waveTypes[currentWav1]);
     } 
+
+    displayer.setValue(currentWav1);
   }
 
   //Osc 2 type shifting
@@ -207,6 +209,8 @@ void loop() {
     for (int i = 0; i < keyCount; i++) {
       waveforms[i * 2 + 1]->begin(waveTypes[currentWav2]);
     } 
+
+    displayer.setValue(currentWav2);
   }
 
   //Filter mixing

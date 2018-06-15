@@ -36,11 +36,12 @@
 #define NOTE_A4  440.00
 #define NOTE_As4 466.16
 #define NOTE_B4  493.88
+#define NOTE_C5  523.25
 
 //Frequencies for keys
 #define scaleCount 2
-const float cMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4 };
-const float cHarmonicMinor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_Fs4, NOTE_G4, NOTE_A4, NOTE_B4 };
+const float cMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 };
+const float cHarmonicMinor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_Fs4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 };
 const float* scales[] = { cMajor, cHarmonicMinor };
 
 

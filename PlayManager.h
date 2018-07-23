@@ -3,61 +3,63 @@
 
 class PlayManager {
   private:
-    Bounce **buttons;
+    //Bounce **buttons;
+    const int powerPins[];
+    const int inputPins[];
     AudioEffectEnvelope **envelopes;
-    int sz;
-    BinaryDisplay *disp;
+    int powerSz;
+    int inputSz;
+    int envelopeSz;
 
   public:
-    void setup(int size, const int inputs[], AudioEffectEnvelope *envSet[], BinaryDisplay *dis) {
+    void setup(int powSz, int inpSz, int envSz, const int powPins[], const int inpPins[], AudioEffectEnvelope *envSet[]) {
       //Initialize arrays
-      buttons = new Bounce*[size];
+      inputPins = inpPins;
+      powerPins = powPins;
       
-      sz = size;
+      powerSz = powSz;
+      inputSz = inpSz;
+      envelopeSz = envSz;
+      
       envelopes = envSet;
 
-      //Setup of objects
-      for (int i = 0; i < sz; i++) {
-        //Setup envelopes
-        envelopes[i]->hold(100);
-        envelopes[i]->decay(800);
-        envelopes[i]->sustain(0.0);
-        
-        //Instantiate new buttons
-        buttons[i] = new Bounce();
-        
-        pinMode(inputs[i], INPUT);
-        buttons[i]->attach(inputs[i]);
-        buttons[i]->interval(20);
+      //Setup of pins
+      for (int i = 0; i < inpSz; i++) {
+        pinMode(inputs[i], INPUT_PULLDOWN);
       }
 
-      disp = dis;
+      //Setup of envelope objects
+      for (int i = 0; i < powSz; i++) {
+        for (int j = 0; j < inpSz; j++) {
+          envelopes[i * j]->hold(100);
+          envelopes[i * j]->decay(800);
+          envelopes[i * j]->sustain(0.1);
+        }
+      }
     }
 
     void updatePatches() {
       
-      for (int i = 0; i < sz; i++) {
+      for (int i = 0; i < powerSz; i++) {
+        digitalWrite(powerPins[i], HIGH);
+        delay(5);
         
-        buttons[i]->update();
-        if (buttons[i]->rose()) {
-          envelopes[i]->noteOff();
-        } else if (buttons[i]->fell()) {
-          envelopes[i]->noteOn();
-          disp->setValue(i + 1);
+        for (int j = 0; j < inputSz; j++) {
+            if (digitalRead(pins[j])) {
+              if (!envelopes[i * j]->isActive()) {
+                envelopes[i * j]->noteOn();
+              }
+            } else if (envelopes[i * j]->isActive()) {
+              envelopes[i * j]->noteOff();
+            }
         }
         
+        digitalWrite(powerPins[i], LOW);
       }
     }
 
     //Deconstructor
     ~PlayManager() {
-      //Destruct all classes
-      /*for (int i = 0; i < sz; i++) {
-        delete buttons[i];
-      }*/
-
-      //Delete entire arrays
-      delete[] buttons;
       delete[] envelopes;
     }
 };

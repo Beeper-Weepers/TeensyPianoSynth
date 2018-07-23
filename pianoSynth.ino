@@ -1,4 +1,3 @@
-#include <Bounce2.h>
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -96,34 +95,37 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=159,1182
 
 
 //Custom headers importing
-#include "BinaryDisplay.h"
+//#include "BinaryDisplay.h"
 #include "PlayManager.h"
 #include "FrequencyData.h"
 
-#define keyCount 8
+#define ENVELOPE_COUNT 8
 //Should be x2 the keyCount
-#define waveformCount 16
+#define WAVEFORM_COUNT 14
 
 //Pin structures
-#define buttonsSize 4
+/*#define buttonsSize 4
 const int buttonPins[] = {36, 37, 38, 39};
-Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce()};
+Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce()};*/
 
-const int keys[keyCount] = {31, 30, 33, 29, 28, 35, 32, 34};
+//Keys
+#define INPUT_COUNT 8
+#define POWER_COUNT 7
+const int KEY_COUNT = INPUT_COUNT * POWER_COUNT;
 
-#define ledsSize 4
-const int leds[ledsSize] = {24, 25, 26, 27};
+int inputPins[INPUT_COUNT] = {32, 31, 30, 29, 28, 27, 26, 25};
+int powerPins[POWER_COUNT] = {33, 34, 35, 36, 37, 38, 39};
+
+//#define ledsSize 4
+//const int leds[ledsSize] = {24, 25, 26, 27};
 
 //Object declaration
-BinaryDisplay displayer;
+//BinaryDisplay displayer;
 PlayManager manager;
 
 //Audio structures
 AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelope4, &envelope5, &envelope6, &envelope7, &envelope8};
 AudioSynthWaveform *waveforms[waveformCount] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14, &waveform15, &waveform16};
-
-//Current scale for keys
-int currentScale = 0;
 
 //Current waveform type for each oscillator
 int currentWav1 = 0;
@@ -134,6 +136,10 @@ const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAV
 //High/Low Filter Mix
 #define filterPot A10
 
+//Notes
+const float notes[KEY_COUNT];
+#define STARTING_NOTE 36 //C2
+
 void setup() {
   AudioMemory(80);
   Serial.begin(9600);
@@ -142,27 +148,35 @@ void setup() {
   sgtl5000_1.volume(0.8);
 
   //Setup static custom objects
-  manager.setup(keyCount, keys, envelopes, &displayer);
-  displayer.setup(ledsSize, leds);
+  manager.setup(POWER_COUNT, INPUT_COUNT, ENVELOPE_COUNT, powerPins, inputPins, envelopes);
+  //displayer.setup(ledsSize, leds);
+
+  //Setup notes
+  for (int i = 0; i < KEY_COUNT; i++) {
+    notes[i] = 440.0f * pow(2.0, (float)(STARTING_NOTE + i - 69) * 0.0833333f);
+  }
   
   //Setup waveforms
-  for (int i = 0; i < keyCount; i++) {
-    waveforms[i * 2]->begin(4.0 / 3.0, cMajor[i], WAVEFORM_SINE);
-    waveforms[i * 2 + 1]->begin(0.75, cMajor[i] / 2.0, WAVEFORM_SINE);
+  for (int i = 0; i < ENVELOPE_COUNT; i++) {
+    waveforms[i * 2]->begin(4.0 / 3.0, notes[i], WAVEFORM_SINE);
+    waveforms[i * 2 + 1]->begin(0.75, notes[i] / 2.0, WAVEFORM_SINE);
   }
 
   //Setup up buttons
-  for (int i = 0; i < buttonsSize; i++) {
+  /*for (int i = 0; i < buttonsSize; i++) {
     pinMode(buttonPins[i], INPUT);
     buttons[i]->attach(buttonPins[i]);
     buttons[i]->interval(5);
-  }
+  }*/
 
   //Setup filter
   filter1.frequency(350);
   filter1.resonance(0.6);
   filter1.octaveControl(1);
+  dc1.amplitude(0.5);
+  dc2.amplitude(0.5);
 
+  //Turn onboard LED on
   pinMode(13, OUTPUT);
   digitalWrite(13, HIGH);
 }
@@ -170,8 +184,9 @@ void setup() {
 
 void loop() {
   manager.updatePatches();
-  displayer.updateLEDs();
+  //displayer.updateLEDs();
 
+/*
   //Scale shifting
   buttons[0]->update();
   if (buttons[0]->rose()) {
@@ -188,7 +203,7 @@ void loop() {
     displayer.setValue(currentScale);
     
   }
-
+  
   //Osc 1 type shifting
   buttons[1]->update();
   if (buttons[1]->rose()) {
@@ -217,5 +232,6 @@ void loop() {
   float mixValue = (float) analogRead(filterPot) / 1024.0;
   dc1.amplitude(1.0 - mixValue, 20);
   dc2.amplitude(mixValue, 20);
+*/
 }
 

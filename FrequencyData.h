@@ -4,6 +4,12 @@
 
 //Setup note definitions for octaves 2 - 4
 
+A
+B
+C
+C#
+D
+D#
 #define NOTE_E2   82.41
 #define NOTE_F2   87.31
 #define NOTE_Fs2  92.50
@@ -39,10 +45,5 @@
 #define NOTE_C5  523.25
 
 //Frequencies for keys
-#define scaleCount 2
-const float cMajor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 };
-const float cHarmonicMinor[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_Fs4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 };
-const float* scales[] = { cMajor, cHarmonicMinor };
-
 
 #endif

@@ -97,11 +97,11 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=159,1182
 //Custom headers importing
 //#include "BinaryDisplay.h"
 #include "PlayManager.h"
-#include "FrequencyData.h"
+//#include "FrequencyData.h"
 
 #define ENVELOPE_COUNT 8
 //Should be x2 the keyCount
-#define WAVEFORM_COUNT 14
+#define WAVEFORM_COUNT 16
 
 //Pin structures
 /*#define buttonsSize 4
@@ -110,11 +110,11 @@ Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce()};*/
 
 //Keys
 #define INPUT_COUNT 8
-#define POWER_COUNT 7
+#define POWER_COUNT 8
 const int KEY_COUNT = INPUT_COUNT * POWER_COUNT;
 
 int inputPins[INPUT_COUNT] = {32, 31, 30, 29, 28, 27, 26, 25};
-int powerPins[POWER_COUNT] = {33, 34, 35, 36, 37, 38, 39};
+int powerPins[POWER_COUNT] = {24, 33, 34, 35, 36, 37, 38, 39};
 
 //#define ledsSize 4
 //const int leds[ledsSize] = {24, 25, 26, 27};
@@ -125,7 +125,7 @@ PlayManager manager;
 
 //Audio structures
 AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelope4, &envelope5, &envelope6, &envelope7, &envelope8};
-AudioSynthWaveform *waveforms[waveformCount] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14, &waveform15, &waveform16};
+AudioSynthWaveform *waveforms[WAVEFORM_COUNT] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14, &waveform15, &waveform16};
 
 //Current waveform type for each oscillator
 int currentWav1 = 0;
@@ -137,7 +137,7 @@ const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAV
 #define filterPot A10
 
 //Notes
-const float notes[KEY_COUNT];
+float notes[KEY_COUNT];
 #define STARTING_NOTE 36 //C2
 
 void setup() {
@@ -148,7 +148,7 @@ void setup() {
   sgtl5000_1.volume(0.8);
 
   //Setup static custom objects
-  manager.setup(POWER_COUNT, INPUT_COUNT, ENVELOPE_COUNT, powerPins, inputPins, envelopes);
+  manager.setup(POWER_COUNT, INPUT_COUNT, ENVELOPE_COUNT, powerPins, inputPins, envelopes, waveforms, notes);
   //displayer.setup(ledsSize, leds);
 
   //Setup notes
@@ -157,9 +157,10 @@ void setup() {
   }
   
   //Setup waveforms
+  const float wav1Volume = 4.0 / 3.0;
   for (int i = 0; i < ENVELOPE_COUNT; i++) {
-    waveforms[i * 2]->begin(4.0 / 3.0, notes[i], WAVEFORM_SINE);
-    waveforms[i * 2 + 1]->begin(0.75, notes[i] / 2.0, WAVEFORM_SINE);
+    waveforms[i * 2]->begin(wav1Volume, 0, WAVEFORM_SINE);
+    waveforms[i * 2 + 1]->begin(0.75, 0, WAVEFORM_SINE);
   }
 
   //Setup up buttons

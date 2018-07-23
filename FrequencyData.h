@@ -4,12 +4,6 @@
 
 //Setup note definitions for octaves 2 - 4
 
-A
-B
-C
-C#
-D
-D#
 #define NOTE_E2   82.41
 #define NOTE_F2   87.31
 #define NOTE_Fs2  92.50

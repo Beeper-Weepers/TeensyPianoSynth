@@ -104,17 +104,17 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=159,1182
 #define WAVEFORM_COUNT 16
 
 //Pin structures
-/*#define buttonsSize 4
-const int buttonPins[] = {36, 37, 38, 39};
-Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce()};*/
+/*#define buttonsSize 2
+const int buttonPins[] = {36, 37};
+Bounce* buttons[] = {new Bounce(), new Bounce()};*/
 
 //Keys
 #define INPUT_COUNT 8
 #define POWER_COUNT 8
-const int KEY_COUNT = INPUT_COUNT * POWER_COUNT;
+const uint8_t KEY_COUNT = INPUT_COUNT * POWER_COUNT;
 
 int inputPins[INPUT_COUNT] = {32, 31, 30, 29, 28, 27, 26, 25};
-int powerPins[POWER_COUNT] = {24, 33, 34, 35, 36, 37, 38, 39};
+int powerPins[POWER_COUNT] = {46, 33, 34, 35, 36, 37, 38, 39};
 
 //#define ledsSize 4
 //const int leds[ledsSize] = {24, 25, 26, 27};
@@ -128,13 +128,17 @@ AudioEffectEnvelope *envelopes[] = {&envelope1, &envelope2, &envelope3, &envelop
 AudioSynthWaveform *waveforms[WAVEFORM_COUNT] = {&waveform1, &waveform2, &waveform3, &waveform4, &waveform5, &waveform6, &waveform7, &waveform8, &waveform9, &waveform10, &waveform11, &waveform12, &waveform13, &waveform14, &waveform15, &waveform16};
 
 //Current waveform type for each oscillator
-int currentWav1 = 0;
-int currentWav2 = 0;
+uint8_t currentWav1 = 0;
+uint8_t currentWav2 = 0;
 #define waveTSize 4
 const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAVEFORM_TRIANGLE };
 
-//High/Low Filter Mix
-#define filterPot A10
+//Potentiometer
+//#define filterPot A10
+#define ATTACK_POT A22
+#define DELAY_POT A21
+#define SUSTAIN_POT A10
+#define RELEASE_POT A11
 
 //Notes
 float notes[KEY_COUNT];
@@ -152,13 +156,13 @@ void setup() {
   //displayer.setup(ledsSize, leds);
 
   //Setup notes
-  for (int i = 0; i < KEY_COUNT; i++) {
+  for (uint8_t i = 0; i < KEY_COUNT; i++) {
     notes[i] = 440.0f * pow(2.0, (float)(STARTING_NOTE + i - 69) * 0.0833333f);
   }
   
   //Setup waveforms
   const float wav1Volume = 4.0 / 3.0;
-  for (int i = 0; i < ENVELOPE_COUNT; i++) {
+  for (uint8_t i = 0; i < ENVELOPE_COUNT; i++) {
     waveforms[i * 2]->begin(wav1Volume, 0, WAVEFORM_SINE);
     waveforms[i * 2 + 1]->begin(0.75, 0, WAVEFORM_SINE);
   }
@@ -188,45 +192,27 @@ void loop() {
   //displayer.updateLEDs();
 
 /*
-  //Scale shifting
-  buttons[0]->update();
-  if (buttons[0]->rose()) {
-    currentScale += (currentScale + 1) % scaleCount;
-
-    //Store scale inside temporary var to access within frequency loop
-    const float *scale = scales[currentScale];
-    
-    for (int i = 0; i < keyCount; i++) {
-      waveforms[i * 2]->frequency(scale[i]);
-      waveforms[i * 2 + 1]->frequency(scale[i] / 2.0);
-    }
-
-    displayer.setValue(currentScale);
-    
-  }
   
   //Osc 1 type shifting
-  buttons[1]->update();
-  if (buttons[1]->rose()) {
+  buttons[0]->update();
+  if (buttons[0]->rose()) {
     currentWav1 = (currentWav1 + 1) % waveTSize;
 
-    for (int i = 0; i < keyCount; i++) {
+    for (int i = 0; i < ENVELOPE_COUNT; i++) {
       waveforms[i * 2]->begin(waveTypes[currentWav1]);
     } 
 
-    displayer.setValue(currentWav1);
   }
 
   //Osc 2 type shifting
-  buttons[2]->update();
-  if (buttons[2]->rose()) {
+  buttons[0]->update();
+  if (buttons[0]->rose()) {
     currentWav2 = (currentWav2 + 1) % waveTSize;
 
-    for (int i = 0; i < keyCount; i++) {
+    for (int i = 0; i < ENVELOPE_COUNT; i++) {
       waveforms[i * 2 + 1]->begin(waveTypes[currentWav2]);
     } 
 
-    displayer.setValue(currentWav2);
   }
 
   //Filter mixing
@@ -234,5 +220,17 @@ void loop() {
   dc1.amplitude(1.0 - mixValue, 20);
   dc2.amplitude(mixValue, 20);
 */
+
+  //ADSR Potentiometers
+  float attackValue = (analogRead(ATTACK_POT) / 1024.0) * 100.0; // time
+  float delayValue = (analogRead(DELAY_POT) / 1024.0) * 150.0; //time 
+  float sustainValue = analogRead(SUSTAIN_POT) / 1024.0;
+  float releaseValue = (analogRead(RELEASE_POT) / 1024.0) * 100.0; //time
+  for (uint8_t i = 0; i < ENVELOPE_COUNT; i++) {
+    envelopes[i]->attack(attackValue);
+    envelopes[i]->delay(delayValue);
+    envelopes[i]->sustain(sustainValue);
+    envelopes[i]->release(releaseValue);
+  }
 }
 

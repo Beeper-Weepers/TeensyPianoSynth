@@ -155,7 +155,7 @@ class PlayManager {
               }
               //Bump up in list
               else {
-                if (envelopes[pos]->state < 1 || envelopes[pos]->state > 5) {
+                if (!envelopes[pos]->onState()) {
                   envelopeBump(pos);
                   pos = envelopeSz - 1;
                   envelopes[pos]->noteOn();
@@ -164,7 +164,7 @@ class PlayManager {
               
             }
             //Old key released
-            else if (pos != -1 && envelopes[pos]->state >= 1 && envelopes[pos]->state <= 5) {
+            else if (pos != -1 && envelopes[pos]->onState()) {
                 envelopes[pos]->noteOff();
             }
         }

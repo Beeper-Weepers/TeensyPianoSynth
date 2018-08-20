@@ -147,21 +147,21 @@ class PlayManager {
             pos = findInEnvelopes(indx);
             //New key pressed
             if (digitalRead(inputPins[j])) {
-              
-              //Add to list
-              if (pos == -1) {
-                  envelopeAdd(indx);
-                  envelopes[envelopeSz - 1]->noteOn();
-              }
-              //Bump up in list
-              else {
-                if (!envelopes[pos]->onState()) {
-                  envelopeBump(pos);
-                  pos = envelopeSz - 1;
-                  envelopes[pos]->noteOn();
+                
+                //Add to list
+                if (pos == -1) {
+                    envelopeAdd(indx);
+                    envelopes[envelopeSz - 1]->noteOn();
                 }
-              }
-              
+                //Bump up in list
+                else {
+                  if (!envelopes[pos]->onState()) {
+                    envelopeBump(pos);
+                    pos = envelopeSz - 1;
+                    envelopes[pos]->noteOn();
+                  }
+                }
+                
             }
             //Old key released
             else if (pos != -1 && envelopes[pos]->onState()) {

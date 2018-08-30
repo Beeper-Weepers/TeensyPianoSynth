@@ -138,7 +138,7 @@ class PlayManager {
       for (int i = 0; i < powerSz; i++) {
         //Run power to key lane
         digitalWrite(powerPins[i], HIGH);
-        delay(5);
+        delay(1);
 
         //Check inputs in lane
         for (int j = 0; j < inputSz; j++) {
@@ -147,6 +147,7 @@ class PlayManager {
             pos = findInEnvelopes(indx);
             //New key pressed
             if (digitalRead(inputPins[j])) {
+                Serial.println(indx); 
                 
                 //Add to list
                 if (pos == -1) {

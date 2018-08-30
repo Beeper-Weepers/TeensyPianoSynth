@@ -41,12 +41,12 @@ AudioEffectEnvelope      envelope3;      //xy=496,276
 AudioMixer4              mixer1;         //xy=700,270
 AudioMixer4              mixer2;         //xy=718,634
 AudioMixer4              mixer3;         //xy=904,431
-AudioEffectFlange        flange1;        //xy=1028,355
-AudioEffectReverb        reverb1;        //xy=1079,549
-AudioFilterStateVariable filter1;        //xy=1297,556
-AudioMixer4              mixer5;         //xy=1308,440
-AudioAmplifier           amp1;           //xy=1455,462
-AudioOutputI2S           i2s1;           //xy=1639,467
+AudioEffectFlange        flange1;        //xy=1047,428
+AudioEffectReverb        reverb1;        //xy=1189,433
+AudioFilterStateVariable filter1;        //xy=1332,425
+AudioMixer4              mixer5;         //xy=1469,411
+AudioAmplifier           amp1;           //xy=1604,401
+AudioOutputI2S           i2s1;           //xy=1747,400
 AudioConnection          patchCord1(waveform13, 0, multiply7, 0);
 AudioConnection          patchCord2(waveform12, 0, multiply6, 1);
 AudioConnection          patchCord3(waveform16, 0, multiply8, 1);
@@ -84,15 +84,15 @@ AudioConnection          patchCord34(mixer2, 0, mixer3, 1);
 AudioConnection          patchCord35(mixer3, flange1);
 AudioConnection          patchCord36(flange1, reverb1);
 AudioConnection          patchCord37(reverb1, 0, filter1, 0);
-AudioConnection          patchCord38(reverb1, 0, filter1, 1);
-AudioConnection          patchCord39(filter1, 0, mixer5, 0);
-AudioConnection          patchCord40(filter1, 1, mixer5, 1);
-AudioConnection          patchCord41(filter1, 2, mixer5, 2);
-AudioConnection          patchCord42(mixer5, amp1);
-AudioConnection          patchCord43(amp1, 0, i2s1, 0);
-AudioConnection          patchCord44(amp1, 0, i2s1, 1);
+AudioConnection          patchCord38(filter1, 0, mixer5, 0);
+AudioConnection          patchCord39(filter1, 1, mixer5, 1);
+AudioConnection          patchCord40(filter1, 2, mixer5, 2);
+AudioConnection          patchCord41(mixer5, amp1);
+AudioConnection          patchCord42(amp1, 0, i2s1, 0);
+AudioConnection          patchCord43(amp1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=105,934
 // GUItool: end automatically generated code
+ 
 
 //Custom headers importing
 #include "PlayManager.h"
@@ -103,13 +103,13 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=105,934
 
 //Pin structures
 #define BUTTONS_SIZE 5
-const int buttonPins[] = {42, 41, 54, 56, 57};
+const uint8_t buttonPins[] = {42, 41, 54, 56, 57};
 Bounce* buttons[] = {new Bounce(), new Bounce(), new Bounce(), new Bounce(), new Bounce()}; 
 
 //Keys
 #define INPUT_COUNT 8
-#define POWER_COUNT 8 
-const uint8_t KEY_COUNT = INPUT_COUNT * POWER_COUNT;
+#define POWER_COUNT 8
+const uint8_t KEY_COUNT = INPUT_COUNT * POWER_COUNT; //If key count exceeds 256, change the type to int
 
 int inputPins[INPUT_COUNT] = {32, 31, 30, 29, 28, 27, 26, 25};
 int powerPins[POWER_COUNT] = {46, 33, 34, 35, 36, 37, 38, 39};
@@ -132,15 +132,15 @@ const int waveTypes[] = { WAVEFORM_SINE, WAVEFORM_SAWTOOTH, WAVEFORM_SQUARE, WAV
 uint8_t currentFilter = 0;
 
 //Reverb
-#define REVERB_TIME 0.1
+#define REVERB_TIME 0.2
 boolean reverbOn = false;
 
 //Flange
-#define FLANGE_DELAY_LENGTH (10*AUDIO_BLOCK_SAMPLES)
+#define FLANGE_DELAY_LENGTH (6*AUDIO_BLOCK_SAMPLES)
 short delayLine[FLANGE_DELAY_LENGTH];
-int s_idx = FLANGE_DELAY_LENGTH/4;
-int s_depth = FLANGE_DELAY_LENGTH/4;
-double s_freq = .5;
+const int s_idx = FLANGE_DELAY_LENGTH/4;
+const int s_depth = FLANGE_DELAY_LENGTH/4;
+const double s_freq = .5;
 boolean flangeOn = false;
 
 //Potentiometer
@@ -160,9 +160,6 @@ float notes[KEY_COUNT];
 void setup() {
   //Allocate a (proper) amount of memory usage
   AudioMemory(30);
-
-  //Turn off interrupts for setup
-  AudioNoInterrupts();
   
   Serial.begin(9600);
 
@@ -192,13 +189,15 @@ void setup() {
   }
 
   //Setup filter
+  filter1.frequency(2000);
+  filter1.resonance(0.7);
   filter1.octaveControl(1);
   mixer5.gain(0, 1.0);
   mixer5.gain(1, 0.0);
   mixer5.gain(2, 0.0);
 
   //Set amplifications and volume levels
-  amp1.gain(10.0);
+  amp1.gain(4.0);
 
   //Flange
   flange1.begin(delayLine,FLANGE_DELAY_LENGTH,s_idx,s_depth,s_freq);
@@ -210,9 +209,6 @@ void setup() {
   //Turn onboard LED on
   pinMode(13, OUTPUT);
   digitalWrite(13, HIGH);
-
-  //Reinitialize audio interrupts
-  AudioInterrupts();
 }
 
 
@@ -290,25 +286,27 @@ void loop() {
   sgtl5000_1.volume(volVal);
 
   //Filter Frequency (0 to 2000)
-  float freqVal = (((analogRead(FREQ_POT) >> 3) << 3) / 1024.0) * 2000.0;
+  float freqVal = ((((1024 - analogRead(FREQ_POT)) >> 3) << 3) / 1024.0) * 2000.0;
   filter1.frequency(freqVal);
 
   //Filter Resonance (0.7 to 5.0)
-  float resVal = ((analogRead(RES_POT) / 30.0) + 0.7) * 5.0 - 0.7;
-  filter1.frequency(resVal);
+  float resVal = (((28 - analogRead(RES_POT)) / 28.0) + 0.7) * 5.0 - 0.7;
+  filter1.resonance(resVal);
 
   //ADSR Potentiometers
-  float attackValue = (analogRead(ATTACK_POT) / 1024.0) * 100.0; // ms (0 - 100)
-  float decayValue = (analogRead(DECAY_POT) / 1024.0) * 150.0; // ms (0 - 150)
-  float sustainValue = analogRead(SUSTAIN_POT) / 1024.0;
-  float releaseValue = ((float) analogRead(RELEASE_POT) / 1024.0) * 1000.0; // ms (0 - 1000)
-  for (uint8_t i = 0; i < ENVELOPE_COUNT; i++) {
+  float attackValue = (analogRead(ATTACK_POT) / 1024.0) * 300.0; // ms (0 - 300)
+  float decayValue = (analogRead(DECAY_POT) / 1024.0) * 300.0; // ms (0 - 300)
+  float sustainValue = (float) (1024 - analogRead(SUSTAIN_POT)) / 1024.0;
+  float releaseValue = ((float) (1024 - analogRead(RELEASE_POT)) / 1024.0) * 1000.0; // ms (0 - 1000)
+  for (uint8_t i = 0; i < ENVELOPE_COUNT; i++) { 
     envelopes[i]->attack(attackValue);
     envelopes[i]->decay(decayValue);
     envelopes[i]->sustain(sustainValue);
     envelopes[i]->release(releaseValue);
   }
-  
+
+  Serial.print(volVal);
+  Serial.print("  ");
   Serial.print(attackValue);
   Serial.print("  ");
   Serial.print(decayValue);
@@ -319,8 +317,6 @@ void loop() {
   Serial.print("  ");
   Serial.print(freqVal);
   Serial.print("  ");
-  Serial.print(AudioMemoryUsageMax());
-  Serial.print("  ");
-  Serial.println(resVal);
+  Serial.println(resVal); 
 }
 

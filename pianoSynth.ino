@@ -206,9 +206,11 @@ void setup() {
   //Reverb
   reverb1.reverbTime(0);
   
-  //Turn onboard LED on
+  //Turn onboard LEDs on
   pinMode(13, OUTPUT);
+  pinMode(40, OUTPUT);
   digitalWrite(13, HIGH);
+  digitalWrite(40, HIGH);
 }
 
 
@@ -244,7 +246,6 @@ void loop() {
   //Filter type shifting
   buttons[2]->update();
   if (buttons[2]->rose()) {
-    Serial.println("filter");
     currentFilter = (currentFilter + 1) % FILTER_COUNT;
     for (uint8_t i = 0; i < FILTER_COUNT; i++) {
       mixer5.gain(i, 0.0);
@@ -255,7 +256,6 @@ void loop() {
   //Reverb toggle
   buttons[3]->update();
   if (buttons[3]->rose()) {
-    Serial.println("reverb");
     AudioNoInterrupts();
     reverbOn = !reverbOn;
     if (reverbOn) {
@@ -270,7 +270,6 @@ void loop() {
   //Flange toggle
   buttons[4]->update();
   if (buttons[4]->rose()) {
-    Serial.println("Flange");
     flangeOn = !flangeOn;
     AudioNoInterrupts();
     if (flangeOn) {
@@ -290,14 +289,14 @@ void loop() {
   filter1.frequency(freqVal);
 
   //Filter Resonance (0.7 to 5.0)
-  float resVal = (((28 - analogRead(RES_POT)) / 28.0) + 0.7) * 5.0 - 0.7;
+  float resVal = 0.7 + ((1024 - analogRead(RES_POT)) / 1024.0) * (5.0 - 0.7);
   filter1.resonance(resVal);
 
   //ADSR Potentiometers
   float attackValue = (analogRead(ATTACK_POT) / 1024.0) * 300.0; // ms (0 - 300)
   float decayValue = (analogRead(DECAY_POT) / 1024.0) * 300.0; // ms (0 - 300)
   float sustainValue = (float) (1024 - analogRead(SUSTAIN_POT)) / 1024.0;
-  float releaseValue = ((float) (1024 - analogRead(RELEASE_POT)) / 1024.0) * 1000.0; // ms (0 - 1000)
+  float releaseValue = ((float) (analogRead(RELEASE_POT)) / 1024.0) * 1000.0; // ms (0 - 1000)
   for (uint8_t i = 0; i < ENVELOPE_COUNT; i++) { 
     envelopes[i]->attack(attackValue);
     envelopes[i]->decay(decayValue);

@@ -147,7 +147,6 @@ class PlayManager {
             pos = findInEnvelopes(indx);
             //New key pressed
             if (digitalRead(inputPins[j])) {
-                Serial.println(indx); 
                 
                 //Add to list
                 if (pos == -1) {

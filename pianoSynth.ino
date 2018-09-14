@@ -37,14 +37,14 @@ AudioEffectEnvelope      envelope4;      //xy=475,383
 AudioEffectEnvelope      envelope6;      //xy=475,582
 AudioEffectEnvelope      envelope8;      //xy=478,809
 AudioEffectEnvelope      envelope7;      //xy=483,685
-AudioEffectEnvelope      envelope3;      //xy=496,276
+AudioEffectEnvelope      envelope3;      //xy=494,276
 AudioMixer4              mixer1;         //xy=700,270
 AudioMixer4              mixer2;         //xy=718,634
 AudioMixer4              mixer3;         //xy=904,431
-AudioEffectFlange        flange1;        //xy=1047,428
-AudioEffectReverb        reverb1;        //xy=1189,433
-AudioFilterStateVariable filter1;        //xy=1332,425
-AudioMixer4              mixer5;         //xy=1469,411
+AudioFilterStateVariable filter1;        //xy=1084,433
+AudioMixer4              mixer5;         //xy=1267,420
+AudioEffectFlange        flange1;        //xy=1286,306
+AudioEffectReverb        reverb1;        //xy=1440,372
 AudioAmplifier           amp1;           //xy=1604,401
 AudioOutputI2S           i2s1;           //xy=1747,400
 AudioConnection          patchCord1(waveform13, 0, multiply7, 0);
@@ -81,18 +81,18 @@ AudioConnection          patchCord31(envelope7, 0, mixer2, 2);
 AudioConnection          patchCord32(envelope3, 0, mixer1, 2);
 AudioConnection          patchCord33(mixer1, 0, mixer3, 0);
 AudioConnection          patchCord34(mixer2, 0, mixer3, 1);
-AudioConnection          patchCord35(mixer3, flange1);
-AudioConnection          patchCord36(flange1, reverb1);
-AudioConnection          patchCord37(reverb1, 0, filter1, 0);
-AudioConnection          patchCord38(filter1, 0, mixer5, 0);
-AudioConnection          patchCord39(filter1, 1, mixer5, 1);
-AudioConnection          patchCord40(filter1, 2, mixer5, 2);
-AudioConnection          patchCord41(mixer5, amp1);
+AudioConnection          patchCord35(mixer3, 0, filter1, 0);
+AudioConnection          patchCord36(filter1, 0, mixer5, 0);
+AudioConnection          patchCord37(filter1, 1, mixer5, 1);
+AudioConnection          patchCord38(filter1, 2, mixer5, 2);
+AudioConnection          patchCord39(mixer5, flange1);
+AudioConnection          patchCord40(flange1, reverb1);
+AudioConnection          patchCord41(reverb1, amp1);
 AudioConnection          patchCord42(amp1, 0, i2s1, 0);
 AudioConnection          patchCord43(amp1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=105,934
 // GUItool: end automatically generated code
- 
+
 
 //Custom headers importing
 #include "PlayManager.h"
@@ -197,13 +197,14 @@ void setup() {
   mixer5.gain(2, 0.0);
 
   //Set amplifications and volume levels
-  amp1.gain(4.0);
+  amp1.gain(1.0);
 
   //Flange
   flange1.begin(delayLine,FLANGE_DELAY_LENGTH,s_idx,s_depth,s_freq);
   flange1.voices(FLANGE_DELAY_PASSTHRU,0,0);
 
   //Reverb
+  reverb1.reverbTime(REVERB_TIME);
   reverb1.reverbTime(0);
   
   //Turn onboard LEDs on
@@ -280,7 +281,7 @@ void loop() {
     AudioInterrupts();
   }
 
-  //Volume
+  //Volume 
   float volVal = ((analogRead(VOLUME_POT) >> 2) << 2) / 1024.0;
   sgtl5000_1.volume(volVal);
 
@@ -289,8 +290,8 @@ void loop() {
   filter1.frequency(freqVal);
 
   //Filter Resonance (0.7 to 5.0)
-  float resVal = 0.7 + ((1024 - analogRead(RES_POT)) / 1024.0) * (5.0 - 0.7);
-  filter1.resonance(resVal);
+  //float resVal = 0.7 + ((1024 - analogRead(RES_POT)) / 1024.0) * (5.0 - 0.7);
+  //filter1.resonance(resVal);
 
   //ADSR Potentiometers
   float attackValue = (analogRead(ATTACK_POT) / 1024.0) * 300.0; // ms (0 - 300)
@@ -314,8 +315,8 @@ void loop() {
   Serial.print("  ");
   Serial.print(releaseValue);
   Serial.print("  ");
-  Serial.print(freqVal);
-  Serial.print("  ");
-  Serial.println(resVal); 
+  Serial.println(freqVal);
+  //Serial.print("  ");
+  //Serial.println(resVal); 
 }
 

@@ -28,4 +28,4 @@ The synthesizer has 8 possible envelopes through which to play sound, and two wa
 
 The keyboard itself has 36 keys, but the wiring configuration allows for reading from 64 potential keys (the remainder after the initial 36 are dead inputs). Keys are organized in groups of 8. To read from a group, power is passed through that group's power pin, the inputs are retrieved from the 8 input pins, and then power is switched off. Inputs can only be read in whole groups, so power must be passed through multiple power pins in order to read the whole keyboard.
 
-[!Synth patch](patch_info_teensyaudiopiano.png)
+![Synth patch](patch_info_teensyaudiopiano.png)

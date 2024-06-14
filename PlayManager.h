@@ -155,7 +155,7 @@ class PlayManager {
                 }
                 //Bump up in list
                 else {
-                  if (!envelopes[pos]->onState()) {
+                  if (!envelopes[pos]->isActive()) {
                     envelopeBump(pos);
                     pos = envelopeSz - 1;
                     envelopes[pos]->noteOn();
@@ -164,7 +164,7 @@ class PlayManager {
                 
             }
             //Old key released
-            else if (pos != -1 && envelopes[pos]->onState()) {
+            else if (pos != -1 && envelopes[pos]->isActive()) {
                 envelopes[pos]->noteOff();
             }
         }

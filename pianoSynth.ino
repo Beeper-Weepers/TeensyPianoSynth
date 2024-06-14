@@ -93,7 +93,6 @@ AudioConnection          patchCord43(amp1, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=105,934
 // GUItool: end automatically generated code
 
-
 //Custom headers importing
 #include "PlayManager.h"
 
@@ -158,7 +157,7 @@ float notes[KEY_COUNT];
 #define STARTING_NOTE 36 //C2
 
 void setup() {
-  //Allocate a (proper) amount of memory usage
+  // Allocate memory
   AudioMemory(30);
   
   Serial.begin(9600);
@@ -305,18 +304,20 @@ void loop() {
     envelopes[i]->release(releaseValue);
   }
 
-  Serial.print(volVal);
-  Serial.print("  ");
-  Serial.print(attackValue);
-  Serial.print("  ");
-  Serial.print(decayValue);
-  Serial.print("  ");
-  Serial.print(sustainValue);
-  Serial.print("  ");
-  Serial.print(releaseValue);
-  Serial.print("  ");
-  Serial.println(freqVal);
-  //Serial.print("  ");
-  //Serial.println(resVal); 
+  // Debug output
+  String debugOutput = "";
+  debugOutput += volVal;
+  debugOutput += "  ";
+  debugOutput += attackValue;
+  debugOutput += "  ";
+  debugOutput += decayValue;
+  debugOutput += "  ";
+  debugOutput += sustainValue;
+  debugOutput += "  ";
+  debugOutput += releaseValue;
+  debugOutput += "  ";
+  debugOutput += freqVal;
+
+  Serial.println(debugOutput);
 }
 
